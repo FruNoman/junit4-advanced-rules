@@ -9,6 +9,6 @@ import java.lang.reflect.Method;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.TYPE})
-public @interface AfterSpecificTest {
+public @interface AfterTests {
     public  String[] test();
 }

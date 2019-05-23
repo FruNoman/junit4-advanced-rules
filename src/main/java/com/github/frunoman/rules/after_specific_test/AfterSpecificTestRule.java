@@ -1,4 +1,4 @@
-package com.github.frunoman.rules.afterfailure;
+package com.github.frunoman.rules.after_specific_test;
 
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
@@ -8,14 +8,18 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AfterFailureRule extends TestWatcher {
+public class AfterSpecificTestRule extends TestWatcher {
 
     private Object testClassInstance;
 
-    public AfterFailureRule(final Object testClassInstance) {
+    public AfterSpecificTestRule(final Object testClassInstance) {
         this.testClassInstance = testClassInstance;
     }
 
+    @Override
+    protected void succeeded(Description description) {
+        invokeAfterHackMethods();
+    }
 
     protected void failed(Throwable e, Description description) {
         invokeAfterHackMethods();
@@ -37,10 +41,14 @@ public class AfterFailureRule extends TestWatcher {
     private List<Method> getAfterHackMethods(Class<?> testClass) {
         List<Method> results = new ArrayList<>();
         for (Method method : testClass.getMethods()) {
-            if (method.isAnnotationPresent(AfterFailure.class)) {
-                results.add(method);
+            if (method.isAnnotationPresent(AfterSpecificTest.class)) {
+                String test = method.getAnnotation(AfterSpecificTest.class).test();
+                    if(method.getName().equals(test)) {
+                        results.add(method);
+                    }
+                }
             }
-        }
+
         return results;
     }
 }

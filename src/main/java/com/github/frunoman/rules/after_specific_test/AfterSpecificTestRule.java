@@ -42,12 +42,14 @@ public class AfterSpecificTestRule extends TestWatcher {
         List<Method> results = new ArrayList<>();
         for (Method method : testClass.getMethods()) {
             if (method.isAnnotationPresent(AfterSpecificTest.class)) {
-                String test = method.getAnnotation(AfterSpecificTest.class).test();
-                    if(method.getName().equals(test)) {
+                String[] tests = method.getAnnotation(AfterSpecificTest.class).test();
+                for (String test : tests) {
+                    if (method.getName().equals(test)) {
                         results.add(method);
                     }
                 }
             }
+        }
 
         return results;
     }

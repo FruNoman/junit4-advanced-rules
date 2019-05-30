@@ -67,7 +67,7 @@ public class TestsRule extends TestWatcher {
     public List<Method> getBeforeSpecificMethods(Class<?> testClass) {
         List<Method> results = new ArrayList<>();
         for (Method method : testClass.getMethods()) {
-            if (method.isAnnotationPresent(AfterTests.class)) {
+            if (method.isAnnotationPresent(BeforeTests.class)) {
                 results.add(method);
             }
         }
